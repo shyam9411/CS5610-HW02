@@ -28,13 +28,17 @@
             operation = null;
         }
         else if (op === '.') {
-            if (rightValue === "" && leftValue.indexOf(".") === -1)
+            if (operation === null && leftValue.indexOf(".") === -1)
                 leftValue = leftValue + ".";
-            else
+            else if (operation !== null && rightValue.indexOf(".") === -1) {
                 rightValue = rightValue + ".";
+		bHandled = false;
+	    }
+	    else
+		bHandled = false;
         }
         else if (leftValue != "" && rightValue != "" ) {
-            calc._performALUOperation();
+            calc._performALUOperation(op);
             bHandled = true;
         }
         else {
@@ -45,7 +49,7 @@
         return bHandled;
     }
 
-    calc._performALUOperation = function() {
+    calc._performALUOperation = function(op) {
         if (operation === null)
             return;
 
@@ -75,9 +79,9 @@
                 break;
         }
 
-        operation = null;
         leftValue = "" + leftNumber;
         rightValue = "";
+	operation = op;
     }
 
     calc.clickHandler = function(event) {
