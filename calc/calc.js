@@ -1,24 +1,25 @@
-(function() {
+(function(global) {
 
     let leftValue;
     let rightValue;
     let operation;
+    const calc = {};
 
-    initializeCalc = function() {
+    calc.initializeCalc = function() {
         leftValue = "";
         rightValue = "";
         operation = null;
         let calcFunctionEle = document.getElementsByClassName("calcFunctions");
         for (let index = 0; index < calcFunctionEle.length; index++)
-            calcFunctionEle[index].addEventListener("click", clickHandler)
+            calcFunctionEle[index].addEventListener("click", calc.clickHandler)
     }
 
-    _displayOnCalc = function(calcValue) {
+    calc._displayOnCalc = function(calcValue) {
         let displayEle = document.getElementById("displayText");
         displayEle.value = calcValue;
     }
 
-    _handlerOperation = function(op) {
+    calc._handlerOperation = function(op) {
         let bHandled = true;
 
         if (op === 'C') {
@@ -33,7 +34,7 @@
                 rightValue = rightValue + ".";
         }
         else if (leftValue != "" && rightValue != "" ) {
-            _performALUOperation();
+            calc._performALUOperation();
             bHandled = true;
         }
         else {
@@ -44,7 +45,7 @@
         return bHandled;
     }
 
-    _performALUOperation = function() {
+    calc._performALUOperation = function() {
         if (operation === null)
             return;
 
@@ -79,7 +80,7 @@
         rightValue = "";
     }
 
-    clickHandler = function(event) {
+    calc.clickHandler = function(event) {
         let calcValue = "";
         let clickedValue = event.target.innerText;
 
@@ -94,11 +95,13 @@
             }
         } else {
             // Handle the operations
-            let bOperationHandled = _handlerOperation(clickedValue);
+            let bOperationHandled = calc._handlerOperation(clickedValue);
             calcValue = (bOperationHandled) ? leftValue : rightValue;
         }
-        _displayOnCalc(calcValue);
+        calc._displayOnCalc(calcValue);
     }
 
-    window.addEventListener("load", initializeCalc);
-})();
+   global.calc = calc;
+})(window);
+
+window.addEventListener("load", window.calc.initializeCalc);
