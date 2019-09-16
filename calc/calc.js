@@ -33,14 +33,14 @@
      * Method to handle the function buttons of calculator. It also determines when to compute ALU operations over other calculator operations.
      *
      * @param op determines the operation to be performed in calculator.
-     * @return true when current operations have been handled, false otherwise.
+     * @return 1 when operation has been handled, 2 when operation for decimal has been handled and 3 otherwise.
      * @private
      */
     calc._handlerOperation = function(op) {
-        let bHandled = true;
+        let bHandled = 1;
 
         if (op === 'C') {
-            leftValue = "";
+            leftValue = "0";
             rightValue = "";
             operation = null;
         }
@@ -49,18 +49,18 @@
                 leftValue = leftValue + ".";
             else if (operation !== null && rightValue.indexOf(".") === -1) {
                 rightValue = rightValue + ".";
-		bHandled = false;
+		bHandled = 2;
 	    }
 	    else
-		bHandled = false;
+		bHandled = 3;
         }
         else if (leftValue != "" && rightValue != "" ) {
             calc._performALUOperation(op);
-            bHandled = true;
+            bHandled = 1;
         }
         else {
             operation = op;
-            bHandled = false;
+            bHandled = 2;
         }
 
         return bHandled;
@@ -120,6 +120,10 @@
 
         if (!isNaN(clickedValue)) {
             if (operation === null && rightValue === "") {
+		// Handle the digit 0 of the left operand
+		if (leftValue === "0")
+		    leftValue = "";
+
                 leftValue = leftValue + clickedValue;
                 calcValue = leftValue;
             }
@@ -129,8 +133,11 @@
             }
         } else {
             // Handle the operations
-            let bOperationHandled = calc._handlerOperation(clickedValue);
-            calcValue = (bOperationHandled) ? leftValue : rightValue;
+            let opHandleCode = calc._handlerOperation(clickedValue);
+	    if (opHandleCode === 1 || (opHandleCode === 3 && rightValue === ""))
+		calcValue = leftValue;
+	    else if (opHandleCode === 2 || (opHandleCode === 3))
+		calcValue = rightValue;
         }
         calc._displayOnCalc(calcValue);
     }
