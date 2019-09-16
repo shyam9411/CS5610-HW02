@@ -17,19 +17,20 @@ h1 {
     height: 30px;
 }
 
+/*Attribution: Vertical alignment of text for calc buttons were referred from: https://www.w3docs.com/snippets/css/how-to-vertically-center-text-with-css.html*/
 .calcFunctions {
     display: inline-block;
     cursor: pointer;
     width: 45px;
     height: 30px;
     text-align: center;
-    border: 1px solid #cccccc;
+    border: 1px solid lightgray;
     background: #dddddd;
     margin-top: 5px;
     line-height: 30px;
 }
 
+/*Attribution: Box shadow usage was obtained by using tutorial link from w2schools: https://www.w3schools.com/cssref/css3_pr_box-shadow.asp*/
 .calcFunctions:active {
-    color: white;
-    box-shadow: 0 0 5px -1px rgba(0,0,0,0.6);
+    box-shadow: 0 0 5px -1px gray inset;
 }
